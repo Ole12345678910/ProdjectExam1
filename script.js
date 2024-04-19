@@ -31,8 +31,8 @@ async function fetchApi() {
 }
 
 console.log();
-*/
 
+-----------------------------------------------------------------------------------------------------//
 async function fetchApi(apiKey) {
   const options = {
     headers: {
@@ -55,7 +55,7 @@ async function fetchApi(apiKey) {
     throw error;
   }
 }
-
+---------------------------------------------------------------------------------------------------//
 /*
 // Call fetchApi with apiKey parameter
 const myApiKey = "5794466a-ac21-441f-8a55-385e2fda14c7"; // Define your API key
@@ -130,11 +130,19 @@ async function loginUser(url, data) {
 }
 
 loginUser(`${API_BASE_URL}auth/login`, user);
+
+--------------------------------------------------------------
 */
 
 
-
 const API_BASE_URL = 'https://v2.api.noroff.dev/';
+
+const responseData = await response.json();
+console.log('API Response:', responseData); // Check the structure of the response
+
+const accessToken = responseData.accessToken; // Attempt to access the accessToken
+console.log('Access Token:', accessToken); // Log the access token
+
 
 async function loginUser() {
     const email = document.getElementById('email').value;
@@ -142,7 +150,7 @@ async function loginUser() {
 
     const loginData = {
         email,
-        password
+        password,
     };
 
     try {
@@ -154,19 +162,28 @@ async function loginUser() {
             body: JSON.stringify(loginData),
         });
 
-        if (!response.ok) {
+        // Check if the HTTP response status is OK (status code 200-299)
+        if (response.ok) {
+            // Parse the response body as JSON
+            const json = await response.json();
+            // Extract the access token from the response data
+            const accessToken = json.accessToken;
+
+            // Store the access token in localStorage
+            console.log('Login successful. Access token:', accessToken);
+            localStorage.setItem('accessToken', accessToken);
+
+
+            // Redirect to dashboard or another page upon successful login
+            window.location.href = '/dashboard.html'; // Replace with desired URL
+        } else {
+            // If response status is not OK, throw an error
             throw new Error('Login failed');
         }
-
-        const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoib2xlMTIzIiwiZW1haWwiOiJvbGVidWwwMDk5N0BzdHVkLm5vcm9mZi5ubyIsImlhdCI6MTcxMzQzMDQyNX0.ao8oajhwTxh52gN5oXqtq_N-q28o0DCQXCYEmXrjip";
-
-        localStorage.setItem('accessToken', accessToken);
-        console.log('Login successful. Access token:', accessToken);
-
-        // Redirect to dashboard or another page upon successful login
-        window.location.href = '/dashboard.html'; // Replace with desired URL
     } catch (error) {
+        // Handle any errors that occurred during login
         console.error('Login error:', error.message);
         document.getElementById('error-message').textContent = 'Login failed. Please try again.';
     }
 }
+
