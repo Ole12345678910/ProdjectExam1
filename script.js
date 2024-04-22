@@ -156,13 +156,11 @@ async function loginUser() {
         });
         if (response.ok) {
             const json = await response.json();
-            const accessToken = json.accessToken;
 
             // Store the access token in localStorage
-            console.log('Login successful. Access token:', accessToken);
-            localStorage.setItem('accessToken', accessToken);
-
-
+            localStorage.setItem('accessToken', json.data.accessToken);
+            console.log('Login successful. Access token:', json.data.accessToken);
+            
             // Redirect to dashboard or another page upon successful login
             window.location.href = '/dashboard.html';
         } else {
