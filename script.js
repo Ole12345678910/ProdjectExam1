@@ -137,13 +137,6 @@ loginUser(`${API_BASE_URL}auth/login`, user);
 
 const API_BASE_URL = 'https://v2.api.noroff.dev/';
 
-const responseData = await response.json();
-console.log('API Response:', responseData); // Check the structure of the response
-
-const accessToken = responseData.accessToken; // Attempt to access the accessToken
-console.log('Access Token:', accessToken); // Log the access token
-
-
 async function loginUser() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -161,12 +154,8 @@ async function loginUser() {
             },
             body: JSON.stringify(loginData),
         });
-
-        // Check if the HTTP response status is OK (status code 200-299)
         if (response.ok) {
-            // Parse the response body as JSON
             const json = await response.json();
-            // Extract the access token from the response data
             const accessToken = json.accessToken;
 
             // Store the access token in localStorage
@@ -175,7 +164,7 @@ async function loginUser() {
 
 
             // Redirect to dashboard or another page upon successful login
-            window.location.href = '/dashboard.html'; // Replace with desired URL
+            window.location.href = '/dashboard.html';
         } else {
             // If response status is not OK, throw an error
             throw new Error('Login failed');
