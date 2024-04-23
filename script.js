@@ -134,43 +134,96 @@ loginUser(`${API_BASE_URL}auth/login`, user);
 --------------------------------------------------------------
 */
 
-
-const API_BASE_URL = 'https://v2.api.noroff.dev/';
+const API_BASE_URL = "https://v2.api.noroff.dev/";
 
 async function loginUser() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-    const loginData = {
-        email,
-        password,
-    };
+  const loginData = {
+    email,
+    password,
+  };
 
-    try {
-        const response = await fetch(`${API_BASE_URL}auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(loginData),
-        });
-        if (response.ok) {
-            const json = await response.json();
+  try {
+    const response = await fetch(`${API_BASE_URL}auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginData),
+    });
+    if (response.ok) {
+      const json = await response.json();
 
-            // Store the access token in localStorage
-            localStorage.setItem('accessToken', json.data.accessToken);
-            console.log('Login successful. Access token:', json.data.accessToken);
-            
-            // Redirect to dashboard or another page upon successful login
-            window.location.href = '/dashboard.html';
-        } else {
-            // If response status is not OK, throw an error
-            throw new Error('Login failed');
-        }
-    } catch (error) {
-        // Handle any errors that occurred during login
-        console.error('Login error:', error.message);
-        document.getElementById('error-message').textContent = 'Login failed. Please try again.';
+      // Store the access token and name in localStorage
+      localStorage.setItem("accessToken", json.data.accessToken);
+      localStorage.setItem("name", json.data.name);
+      console.log("Login successful. Access token:", json.data.accessToken);
+
+      // Redirect to dashboard or another page upon successful login
+      window.location.href = "/index.html";
+    } else {
+      // If response status is not OK, throw an error
+      throw new Error("Login failed");
     }
+  } catch (error) {
+    // Handle any errors that occurred during login
+    console.error("Login error:", error.message);
+    document.getElementById("error-message").textContent =
+    "Login failed. Please try again.";
+  }
 }
+
+// Function to show buttons based on certain conditions (e.g., after login)
+function showButton() {
+  // Check if user is logged in (example: check if access token exists in localStorage)
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken) {
+      // User is logged in, show the buttons
+      document.getElementById('manBtn').style.display = 'inline-block';
+  } else {
+      // User is not logged in, buttons remain hidden (display: none;)
+      // Optionally, you can choose to do something else here (e.g., redirect to login page)
+  }
+}
+
+// Call the showButtons function when the page loads
+showButton();
+
+function managePage(){
+  window.location=`make.html`;
+}
+
+/*
+--------------------------------------------------------------
+
+
+const isAdmin = true; // Example: Assuming user is an admin
+
+document.addEventListener('DOMContentLoaded', () => {
+  const adminOverlay = document.getElementById('adminOverlay');
+  
+  // Show admin overlay if user is an admin
+  if (isAdmin) {
+    adminOverlay.style.display = 'block';
+  } else {
+    adminOverlay.style.display = 'none';
+  }
+});
+
+// Retrieve the user's name from localStorage
+const myName = localStorage.getItem('name');
+document.getElementById('hello').innerText = `Welcome, ${myName}!`;
+
+--------------------------------------------------------------
+*/
+
+
+const clearStorage = document.getElementById('clearStorage');
+
+clearStorage.addEventListener('click', () => {
+  localStorage.clear();
+})
 
