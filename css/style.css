@@ -3,6 +3,11 @@
     padding: 0;
 }
 
-#manBtn{
+
+#create-show{
+    display: none;
+}
+
+#show-button{
     display: none;
 }

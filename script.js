@@ -136,65 +136,103 @@ loginUser(`${API_BASE_URL}auth/login`, user);
 
 const API_BASE_URL = "https://v2.api.noroff.dev/";
 
-async function loginUser() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  const loginData = {
-    email,
-    password,
-  };
-
-  try {
-    const response = await fetch(`${API_BASE_URL}auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginData),
-    });
-    if (response.ok) {
-      const json = await response.json();
-
-      // Store the access token and name in localStorage
-      localStorage.setItem("accessToken", json.data.accessToken);
-      localStorage.setItem("name", json.data.name);
-      console.log("Login successful. Access token:", json.data.accessToken);
-
-      // Redirect to dashboard or another page upon successful login
-      window.location.href = "/index.html";
-    } else {
-      // If response status is not OK, throw an error
-      throw new Error("Login failed");
-    }
-  } catch (error) {
-    // Handle any errors that occurred during login
-    console.error("Login error:", error.message);
-    document.getElementById("error-message").textContent =
-    "Login failed. Please try again.";
-  }
-}
+const BlogName = localStorage.getItem("name");
 
 // Function to show buttons based on certain conditions (e.g., after login)
 function showButton() {
   // Check if user is logged in (example: check if access token exists in localStorage)
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem("accessToken");
+  const BlogName = localStorage.getItem("name");
 
   if (accessToken) {
-      // User is logged in, show the buttons
-      document.getElementById('manBtn').style.display = 'inline-block';
+    // User is logged in, show the buttons
+    document.getElementById("show-button").style.display = "inline-block";
+    document.getElementById("blogName").innerHTML = "Welcome " + BlogName;
   } else {
-      // User is not logged in, buttons remain hidden (display: none;)
-      // Optionally, you can choose to do something else here (e.g., redirect to login page)
+    // User is not logged in, buttons remain hidden (display: none;)
+    // Optionally, you can choose to do something else here (e.g., redirect to login page)
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const showButton = document.getElementById("show-button");
+  const createShow = document.getElementById("create-show");
+
+  showButton.addEventListener("click", () => {
+    // Toggle the visibility of the create-show element
+    createShow.style.display =
+      createShow.style.display === "none" ? "block" : "none";
+  });
+});
 
 // Call the showButtons function when the page loads
 showButton();
 
-function managePage(){
-  window.location=`make.html`;
+async function createPost(token, postData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}blog/posts/ole123`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create post. Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    console.log("Post created successfully:", responseData);
+    return responseData; // Return the created post data if needed
+  } catch (error) {
+    console.error("Error creating post:", error);
+    throw error;
+  }
 }
+
+function getTokenFromLocalStorage() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    throw new Error("No access token found in local storage");
+  }
+  return token;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const createPostBtn = document.getElementById("create-post-btn");
+
+  createPostBtn.addEventListener("click", async () => {
+    try {
+      const token = getTokenFromLocalStorage();
+      const title = document.getElementById("title").value;
+      const body = document.getElementById("body").value;
+      const tags = document
+        .getElementById("tags")
+        .value.split(",")
+        .map((tag) => tag.trim());
+      const mediaUrl = document.getElementById("media-url").value;
+      const mediaAlt = document.getElementById("media-alt").value;
+
+      const postData = {
+        title,
+        body,
+        tags,
+        media: {
+          url: mediaUrl,
+          alt: mediaAlt,
+        },
+      };
+
+      await createPost(token, postData);
+      alert("Post created successfully!");
+    } catch (error) {
+      console.error("Error creating post:", error);
+      alert("Failed to create post. Please try again.");
+    }
+  });
+});
 
 /*
 --------------------------------------------------------------
@@ -220,10 +258,8 @@ document.getElementById('hello').innerText = `Welcome, ${myName}!`;
 --------------------------------------------------------------
 */
 
+const clearStorage = document.getElementById("clearStorage");
 
-const clearStorage = document.getElementById('clearStorage');
-
-clearStorage.addEventListener('click', () => {
+clearStorage.addEventListener("click", () => {
   localStorage.clear();
-})
-
+});
