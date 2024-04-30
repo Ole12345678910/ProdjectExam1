@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <title>Details</title>
+  </head>
+  <body>
+    <header></header>
+    <div id="posts"></div>
+    <div class="button-container">
+      <button id="edit-post-btn">Edit Post</button>
+      <button id="delete-post-btn">Delete Post</button>
+      <button id="save-edit-btn">Save</button>
+      <div id="edit-show" class="post-container">
+        <h2>Edit Post</h2>
+        <div>
+          <label for="title">Title:</label>
+          <input type="text" id="title" placeholder="Enter title" />
+        </div>
+        <div>
+          <label for="body">Body:</label>
+          <textarea id="body" placeholder="Enter body"></textarea>
+        </div>
+        <div>
+          <label for="tags">Tags:</label>
+          <input type="text" id="tags" placeholder="Enter tags" />
+        </div>
+        <div>
+          <label for="media-url">Media URL:</label>
+          <input type="text" id="media-url" placeholder="Enter media URL" />
+        </div>
+        <div>
+          <label for="media-alt">Media Alt Text:</label>
+          <input
+            type="text"
+            id="media-alt"
+            placeholder="Enter media alt text"
+          />
+        </div>
+      </div>
+    </div>
+    <footer></footer>
+    <script defer src="details.js"></script>
+  </body>
+</html>

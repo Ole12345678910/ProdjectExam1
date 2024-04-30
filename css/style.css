@@ -1,6 +1,7 @@
 *{
     margin: 0;
     padding: 0;
+    background-color: rgb(201, 201, 201);
 }
 
 
@@ -9,5 +10,36 @@
 }
 
 #show-button{
+    display: none;
+}
+
+.blog-card{
+    margin: 1rem;
+    padding: 1rem;
+    line-height: 1.7rem;
+}
+
+.post-image{
+    width: 200px;
+}
+
+.tags{
+    background-color: lightpink;
+    padding: 0 1rem;
+    border-radius: 1rem;
+    width: fit-content;
+}
+
+.post-image-detail{
+    max-width: 500px;
+}
+
+.button-container{
+    display: flex;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+#edit-show{
     display: none;
 }
