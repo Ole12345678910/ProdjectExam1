@@ -19,6 +19,21 @@
     line-height: 1.7rem;
 }
 
+.blog-card-big{
+    margin: 1rem;
+    padding: 1rem;
+    line-height: 1.7rem;
+}
+
+.blog-container{
+    display: flex;
+}
+
+.post-image-big{
+    width: 500px;
+}
+
+
 .post-image{
     width: 200px;
 }
@@ -28,6 +43,10 @@
     padding: 0 1rem;
     border-radius: 1rem;
     width: fit-content;
+}
+
+.body-text{
+    margin: 1rem 0;
 }
 
 .post-image-detail{

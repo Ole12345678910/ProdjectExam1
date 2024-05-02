@@ -286,10 +286,6 @@ fetchApi(myApiKey)
             <img src="${media}" alt="${media.alt}" class="post-image">
             <p class="tags">${tags}</p>
             <h2>${title}</h2>
-            <p>${body}</p>
-            <p>${id}</p>
-            <p>Author: ${authorName}</p>
-            <p>Created: ${createdDate}</p>
           </div>
         `;
         
@@ -316,6 +312,7 @@ function handlePostClick(postId) {
   // Navigate to a new page with the post ID in the URL
   window.location.href = `/details.html?id=${postId}`;
 }
+
 
 
 /*
