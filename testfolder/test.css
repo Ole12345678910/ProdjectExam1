@@ -1,0 +1,16 @@
+*{
+    margin: 0;
+    padding: 0;
+    background-color: rgb(185, 185, 185);
+}
+
+.slider-wrapper {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.post{
+    width: 325px;
+    height: 400px;
+    object-fit: cover;
+}
