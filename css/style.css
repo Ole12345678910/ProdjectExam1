@@ -5,6 +5,7 @@
 }
 
 
+
 #create-show{
     display: none;
 }
@@ -17,6 +18,8 @@
     margin: 1rem;
     padding: 1rem;
     line-height: 1.7rem;
+    position: absolute;
+    right: 50%;
 }
 
 .blog-card-big{
@@ -62,3 +65,5 @@
 #edit-show{
     display: none;
 }
+/*--------------------------------------*/
+

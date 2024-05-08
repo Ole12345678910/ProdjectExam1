@@ -21,6 +21,205 @@ async function fetchApi(apiKey) {
   }
 }
 
+
+const API_BASE_URL = "https://v2.api.noroff.dev/";
+
+const BlogName = localStorage.getItem("name");
+
+// Function to show buttons based on certain conditions (e.g., after login)
+function showButton() {
+  // Check if user is logged in (example: check if access token exists in localStorage)
+  const accessToken = localStorage.getItem("accessToken");
+  const BlogName = localStorage.getItem("name");
+
+  if (accessToken) {
+    // User is logged in, show the buttons
+    document.getElementById("show-button").style.display = "inline-block";
+    document.getElementById("blogName").innerHTML = "Welcome " + BlogName;
+  } else {
+    // User is not logged in, buttons remain hidden (display: none;)
+    // Optionally, you can choose to do something else here (e.g., redirect to login page)
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const showButton = document.getElementById("show-button");
+  const createShow = document.getElementById("create-show");
+
+  showButton.addEventListener("click", () => {
+    // Toggle the visibility of the create-show element
+    createShow.style.display =
+      createShow.style.display === "none" ? "block" : "none";
+  });
+});
+
+// Call the showButtons function when the page loads
+showButton();
+
+async function createPost(token, postData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}blog/posts/ole123`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create post. Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    console.log("Post created successfully:", responseData);
+    return responseData; // Return the created post data if needed
+  } catch (error) {
+    console.error("Error creating post:", error);
+    throw error;
+  }
+}
+
+function getTokenFromLocalStorage() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    throw new Error("No access token found in local storage");
+  }
+  return token;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const createPostBtn = document.getElementById("create-post-btn");
+
+  createPostBtn.addEventListener("click", async () => {
+    try {
+      const token = getTokenFromLocalStorage();
+      const title = document.getElementById("title").value;
+      const body = document.getElementById("body").value;
+      const tags = document
+        .getElementById("tags")
+        .value.split(",")
+        .map((tag) => tag.trim());
+      const mediaUrl = document.getElementById("media-url").value;
+      const mediaAlt = document.getElementById("media-alt").value;
+
+      const postData = {
+        title,
+        body,
+        tags,
+        media: {
+          url: mediaUrl,
+          alt: mediaAlt,
+        },
+      };
+
+      await createPost(token, postData);
+      alert("Post created successfully!");
+    } catch (error) {
+      console.error("Error creating post:", error);
+      alert("Failed to create post. Please try again.");
+    }
+  });
+});
+
+
+
+const myApiKey = "5794466a-ac21-441f-8a55-385e2fda14c7"; // Define your API key
+
+fetchApi(myApiKey)
+  .then((response) => {
+    console.log("Fetched data:", response);
+    const postsContainer = document.getElementById('posts');
+    
+    // Check if response contains data
+    if (response && response.data && Array.isArray(response.data) && response.data.length > 0) {
+      // Iterate through each post object
+      response.data.forEach(post => {
+        const tags = post.tags;
+        const id = post.id;
+        const title = post.title;
+        const body = post.body;
+        const media = post.media.url;
+        const authorName = post.author.name;
+        const createdDate = new Date(post.created).toLocaleString();
+
+        // Create HTML elements for each post
+        const postElement = document.createElement('div');
+        postElement.classList.add('post');
+        postElement.innerHTML = `
+          <div class="blog-card">
+            <img src="${media}" alt="${media.alt}" class="post-image">
+            <p class="tags">${tags}</p>
+            <h2>${title}</h2>
+          </div>
+        `;
+        
+        // Add click event listener to post element
+        postElement.addEventListener('click', () => {
+          // Call function to handle post click and pass post ID
+          handlePostClick(id);
+        });
+
+        // Append the post element to the posts container
+        postsContainer.appendChild(postElement);
+      });
+    } else {
+      // Display a message if no data is received
+      postsContainer.innerHTML = "<p>No posts found.</p>";
+    }
+  })
+  .catch((error) => {
+    console.error("Fetch operation failed:", error);
+  });
+
+// Function to handle click event on post
+function handlePostClick(postId) {
+  // Navigate to a new page with the post ID in the URL
+  window.location.href = `/details.html?id=${postId}`;
+}
+
+
+const post = document.getElementById("posts");
+
+
+
+
+
+
+
+const clearStorage = document.getElementById("clearStorage");
+
+clearStorage.addEventListener("click", () => {
+  localStorage.clear();
+});
+
+
+
+/*
+--------------------------------------------------------------
+
+
+const isAdmin = true; // Example: Assuming user is an admin
+
+document.addEventListener('DOMContentLoaded', () => {
+  const adminOverlay = document.getElementById('adminOverlay');
+  
+  // Show admin overlay if user is an admin
+  if (isAdmin) {
+    adminOverlay.style.display = 'block';
+  } else {
+    adminOverlay.style.display = 'none';
+  }
+});
+
+// Retrieve the user's name from localStorage
+const myName = localStorage.getItem('name');
+document.getElementById('hello').innerText = `Welcome, ${myName}!`;
+
+--------------------------------------------------------------
+*/
+
+
 /*
 async function fetchApi(){
     return fetchData("https://v2.api.noroff.dev/blog/posts/ole");
@@ -156,194 +355,3 @@ loginUser(`${API_BASE_URL}auth/login`, user);
 
 --------------------------------------------------------------
 */
-
-const API_BASE_URL = "https://v2.api.noroff.dev/";
-
-const BlogName = localStorage.getItem("name");
-
-// Function to show buttons based on certain conditions (e.g., after login)
-function showButton() {
-  // Check if user is logged in (example: check if access token exists in localStorage)
-  const accessToken = localStorage.getItem("accessToken");
-  const BlogName = localStorage.getItem("name");
-
-  if (accessToken) {
-    // User is logged in, show the buttons
-    document.getElementById("show-button").style.display = "inline-block";
-    document.getElementById("blogName").innerHTML = "Welcome " + BlogName;
-  } else {
-    // User is not logged in, buttons remain hidden (display: none;)
-    // Optionally, you can choose to do something else here (e.g., redirect to login page)
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const showButton = document.getElementById("show-button");
-  const createShow = document.getElementById("create-show");
-
-  showButton.addEventListener("click", () => {
-    // Toggle the visibility of the create-show element
-    createShow.style.display =
-      createShow.style.display === "none" ? "block" : "none";
-  });
-});
-
-// Call the showButtons function when the page loads
-showButton();
-
-async function createPost(token, postData) {
-  try {
-    const response = await fetch(`${API_BASE_URL}blog/posts/ole123`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(postData),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to create post. Status: ${response.status}`);
-    }
-
-    const responseData = await response.json();
-    console.log("Post created successfully:", responseData);
-    return responseData; // Return the created post data if needed
-  } catch (error) {
-    console.error("Error creating post:", error);
-    throw error;
-  }
-}
-
-function getTokenFromLocalStorage() {
-  const token = localStorage.getItem("accessToken");
-  if (!token) {
-    throw new Error("No access token found in local storage");
-  }
-  return token;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const createPostBtn = document.getElementById("create-post-btn");
-
-  createPostBtn.addEventListener("click", async () => {
-    try {
-      const token = getTokenFromLocalStorage();
-      const title = document.getElementById("title").value;
-      const body = document.getElementById("body").value;
-      const tags = document
-        .getElementById("tags")
-        .value.split(",")
-        .map((tag) => tag.trim());
-      const mediaUrl = document.getElementById("media-url").value;
-      const mediaAlt = document.getElementById("media-alt").value;
-
-      const postData = {
-        title,
-        body,
-        tags,
-        media: {
-          url: mediaUrl,
-          alt: mediaAlt,
-        },
-      };
-
-      await createPost(token, postData);
-      alert("Post created successfully!");
-    } catch (error) {
-      console.error("Error creating post:", error);
-      alert("Failed to create post. Please try again.");
-    }
-  });
-});
-
-
-
-const myApiKey = "5794466a-ac21-441f-8a55-385e2fda14c7"; // Define your API key
-
-fetchApi(myApiKey)
-  .then((response) => {
-    console.log("Fetched data:", response);
-    const postsContainer = document.getElementById('posts');
-
-    // Check if response contains data
-    if (response && response.data && Array.isArray(response.data) && response.data.length > 0) {
-      // Iterate through each post object
-      response.data.forEach(post => {
-        const tags = post.tags;
-        const id = post.id;
-        const title = post.title;
-        const body = post.body;
-        const media = post.media.url;
-        const authorName = post.author.name;
-        const createdDate = new Date(post.created).toLocaleString();
-
-        // Create HTML elements for each post
-        const postElement = document.createElement('div');
-        postElement.classList.add('post');
-        postElement.innerHTML = `
-          <div class="blog-card">
-            <img src="${media}" alt="${media.alt}" class="post-image">
-            <p class="tags">${tags}</p>
-            <h2>${title}</h2>
-          </div>
-        `;
-        
-        // Add click event listener to post element
-        postElement.addEventListener('click', () => {
-          // Call function to handle post click and pass post ID
-          handlePostClick(id);
-        });
-
-        // Append the post element to the posts container
-        postsContainer.appendChild(postElement);
-      });
-    } else {
-      // Display a message if no data is received
-      postsContainer.innerHTML = "<p>No posts found.</p>";
-    }
-  })
-  .catch((error) => {
-    console.error("Fetch operation failed:", error);
-  });
-
-// Function to handle click event on post
-function handlePostClick(postId) {
-  // Navigate to a new page with the post ID in the URL
-  window.location.href = `/details.html?id=${postId}`;
-}
-
-
-
-/*
---------------------------------------------------------------
-
-
-const isAdmin = true; // Example: Assuming user is an admin
-
-document.addEventListener('DOMContentLoaded', () => {
-  const adminOverlay = document.getElementById('adminOverlay');
-  
-  // Show admin overlay if user is an admin
-  if (isAdmin) {
-    adminOverlay.style.display = 'block';
-  } else {
-    adminOverlay.style.display = 'none';
-  }
-});
-
-// Retrieve the user's name from localStorage
-const myName = localStorage.getItem('name');
-document.getElementById('hello').innerText = `Welcome, ${myName}!`;
-
---------------------------------------------------------------
-*/
-
-
-
-
-const clearStorage = document.getElementById("clearStorage");
-
-clearStorage.addEventListener("click", () => {
-  localStorage.clear();
-});
