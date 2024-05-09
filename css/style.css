@@ -5,20 +5,10 @@
 }
 
 
-#create-show{
+#create-show ,#show-button{
     display: none;
 }
 
-#show-button{
-    display: none;
-}
-
-.blog-card{
-    margin: 1rem;
-    padding: 1rem;
-    line-height: 1.7rem;
-    transition: transform .2s
-}
 
 .blog-card-big{
     margin: 1rem;
@@ -26,92 +16,36 @@
     line-height: 1.7rem;
 }
 
-.blog-container{
-    display: flex;
-}
-
 .post-image-big{
     width: 500px;
 }
 
 
-.post-image{
-    width: 200px;
-}
-
-.tags{
-    background-color: lightpink;
-    padding: 0 1rem;
-    border-radius: 1rem;
-    width: fit-content;
-}
-
-.body-text{
-    margin: 1rem 0;
-}
-
-.post-image-detail{
-    max-width: 500px;
-}
-
-.button-container{
-    display: flex;
-    margin: 1rem;
-    padding: 1rem;
-}
 
 #edit-show{
     display: none;
 }
 
-.blog-card:hover{
-    transform: scale(1.1);
-    cursor: pointer;
+/* CSS */
+
+/* Hide all images by default */
+.post-image {
 }
 
-  /* CSS Styling */
-.blog-container {
-    display: flex;
-    justify-content: center; /* Center the post horizontally */
-    align-items: center; /* Center the post vertically */
-    max-width: 800px; /* Maximum width of a post */
-    margin: 0 auto; /* Center horizontally */
+/* Show the image with the 'visible' class */
+.post-image.visible {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.slides {
-    overflow: hidden; /* Hide overflowing content */
+/* Ensure that images are stacked on top of each other */
+.post-image {
+  z-index: 0;
 }
 
-.carousel {
-    width: 300px; /* Full width */
-    overflow: hidden; /* Hide overflowing content */
-    margin: 0 auto; /* Center horizontally */
-}
-
-
-  
-  .control-btn {
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    
-    justify-content: space-between;
-  }
-  
-  .prev-btn {
-
-    background-color: white;
-    padding: 0 0.5rem;
-    border-radius: 50%;
-  }
-  
-  .next-btn {
-    background-color: white;
-    padding: 0 0.5rem;
-    border-radius: 50%;
-  }
-
-.controls{
-    display: flex;
-    justify-content: space-evenly;
+/* Bring the visible image to the top */
+.post-image.visible {
+  z-index: 1;
 }

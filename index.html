@@ -10,14 +10,12 @@
     <header></header>
     <div class="make-post">
       <h1 id="blogName"></h1>
-      <div class="carousel">
-        <div class="slides" id="slides">
-          <div class="blog-container" id="posts"></div>
+      <div class="carousel-container">
+        <div class="blog-container" id="posts">
+          <!-- API-fetched post items will be displayed here -->
         </div>
-        <div class="controls">
-          <button class="control-btn prev-btn" onclick="prevSlide()">&#10094;</button>
-          <button class="control-btn next-btn" onclick="nextSlide()">&#10095;</button>
-        </div>
+        <button class="prev-btn">&lt;</button>
+        <button class="next-btn">&gt;</button>
       </div>      
       <button id="show-button">Make</button>
       <div id="create-show" class="post-container">

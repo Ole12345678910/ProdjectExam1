@@ -287,18 +287,23 @@ function createCarousel(postsData) {
       const tags = post.tags;
       const title = post.title;
       const media = post.media.url;
+      const postId = post.id || ``;
 
       // Create HTML elements for each post
       const postElement = document.createElement('div');
       postElement.classList.add('post');
       postElement.innerHTML = `
         <div class="blog-card">
-          <img src="${media}" alt="${media.alt}" class="post-image">
+          <div class="image-container">
+            <img src="${media}" alt="${media.alt}" class="post-image">
+          </div>
           <p class="tags">${tags}</p>
           <h2>${title}</h2>
         </div>
       `;
-
+      postElement.addEventListener('click', () =>{
+        window.location.href = `/details.html?id=${postId}`;
+      });
       // Append the post element to the posts container
       postsContainer.appendChild(postElement);
     });
@@ -307,52 +312,6 @@ function createCarousel(postsData) {
     postsContainer.innerHTML = "<p>No posts found.</p>";
   }
 }
-
-// JavaScript logic for carousel navigation
-const slidesContainer = document.querySelector('.slides'); // Define slidesContainer
-let slideWidth; // Define slideWidth variable
-
-// Function to update slide position
-// Function to update slide position
-function updateSlidePosition() {
-  const slides = document.querySelectorAll('.slides .post'); // Corrected class name to '.post'
-  if (slides.length > 0) {
-      slideWidth = slides[0].getBoundingClientRect().width;
-      const slidesContainer = document.querySelector('.slides');
-      slidesContainer.style.transform = `translateX(-${slideWidth}px)`; // Move slides by one slide width
-  }
-}
-
-// Function to move to the previous slide
-// Function to move to the previous slide
-function prevSlide() {
-  updateSlidePosition(); // Call updateSlidePosition to ensure slideWidth is defined
-  const slidesContainer = document.querySelector('.slides');
-  slidesContainer.style.transform = `translateX(${slideWidth}px)`; // Move slides by one slide width to the left
-}
-
-// Function to move to the next slide
-function nextSlide() {
-    updateSlidePosition(); // Call updateSlidePosition to ensure slideWidth is defined
-    // Rest of the function code...
-}
-
-// Event listeners for previous and next buttons
-
-// Reset slide position to the first slide after transition ends
-// Reset slide position to the first slide after transition ends
-slidesContainer.addEventListener('transitionend', () => {
-  console.log('Transition ended'); // Debugging statement
-  if (slideIndex === numSlides - 1) {
-      slidesContainer.style.transition = "none";
-      slideIndex = 0;
-      slidesContainer.style.transform = `translateX(0)`;
-  }
-});
-
-
-document.querySelector('.prev-btn').addEventListener('click', prevSlide);
-document.querySelector('.next-btn').addEventListener('click', nextSlide);
 
 
 /*
@@ -380,11 +339,54 @@ document.getElementById('hello').innerText = `Welcome, ${myName}!`;
 */
 
 //image slider-----------------------------------------------------------------
+/* JavaScript */
 
+// JavaScript
+
+document.addEventListener('DOMContentLoaded', function() {
+  const prevButton = document.querySelector('.prev-btn');
+  const nextButton = document.querySelector('.next-btn');
+  const postcards = document.querySelectorAll('.post-image');
+  let currentIndex = 0;
+
+  if (postcards.length > 0) {
+    currentIndex = 0; // Initialize to the first postcard if available
+  }
+
+  function showCurrentPostcard() {
+    console.log('Current Index:', currentIndex);
+    postcards.forEach((postcard, index) => {
+      if (index === currentIndex) {
+        postcard.classList.add('visible');
+      } else {
+        postcard.classList.remove('visible');
+      }
+    });
+  }
+
+  showCurrentPostcard();
+
+  nextButton.addEventListener('click', function() {
+    console.log('Next button clicked');
+    if (postcards.length > 0) {
+      currentIndex = (currentIndex + 1) % postcards.length;
+      console.log('New index:', currentIndex);
+      showCurrentPostcard();
+    }
+  });
+
+  prevButton.addEventListener('click', function() {
+    console.log('Previous button clicked');
+    if (postcards.length > 0) {
+      currentIndex = (currentIndex - 1 + postcards.length) % postcards.length;
+      console.log('New index:', currentIndex);
+      showCurrentPostcard();
+    }
+  });
+});
 
 
 //image slider-----------------------------------------------------------------
-
 
 const clearStorage = document.getElementById("clearStorage");
 
