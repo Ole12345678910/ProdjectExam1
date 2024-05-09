@@ -21,6 +21,259 @@ async function fetchApi(apiKey) {
   }
 }
 
+
+const API_BASE_URL = "https://v2.api.noroff.dev/";
+
+const BlogName = localStorage.getItem("name");
+
+// Function to show buttons based on certain conditions (e.g., after login)
+function showButton() {
+  // Check if user is logged in (example: check if access token exists in localStorage)
+  const accessToken = localStorage.getItem("accessToken");
+  const BlogName = localStorage.getItem("name");
+
+  if (accessToken) {
+    // User is logged in, show the buttons
+    document.getElementById("show-button").style.display = "inline-block";
+    document.getElementById("blogName").innerHTML = "Welcome " + BlogName;
+  } else {
+    // User is not logged in, buttons remain hidden (display: none;)
+    // Optionally, you can choose to do something else here (e.g., redirect to login page)
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const showButton = document.getElementById("show-button");
+  const createShow = document.getElementById("create-show");
+
+  showButton.addEventListener("click", () => {
+    // Toggle the visibility of the create-show element
+    createShow.style.display =
+      createShow.style.display === "none" ? "block" : "none";
+  });
+});
+
+// Call the showButtons function when the page loads
+showButton();
+
+async function createPost(token, postData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}blog/posts/ole123`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create post. Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    console.log("Post created successfully:", responseData);
+    return responseData; // Return the created post data if needed
+  } catch (error) {
+    console.error("Error creating post:", error);
+    throw error;
+  }
+}
+
+function getTokenFromLocalStorage() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    throw new Error("No access token found in local storage");
+  }
+  return token;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const createPostBtn = document.getElementById("create-post-btn");
+
+  createPostBtn.addEventListener("click", async () => {
+    try {
+      const token = getTokenFromLocalStorage();
+      const title = document.getElementById("title").value;
+      const body = document.getElementById("body").value;
+      const tags = document
+        .getElementById("tags")
+        .value.split(",")
+        .map((tag) => tag.trim());
+      const mediaUrl = document.getElementById("media-url").value;
+      const mediaAlt = document.getElementById("media-alt").value;
+
+      const postData = {
+        title,
+        body,
+        tags,
+        media: {
+          url: mediaUrl,
+          alt: mediaAlt,
+        },
+      };
+
+      await createPost(token, postData);
+      alert("Post created successfully!");
+    } catch (error) {
+      console.error("Error creating post:", error);
+      alert("Failed to create post. Please try again.");
+    }
+  });
+});
+
+
+
+const myApiKey = "5794466a-ac21-441f-8a55-385e2fda14c7"; // Define your API key
+
+// Fetch data and create carousel
+fetchApi(myApiKey)
+  .then((response) => {
+    console.log("Fetched data:", response);
+<<<<<<< HEAD
+=======
+    const postsContainer = document.getElementById('posts');
+    
+>>>>>>> 4d967f1b28d42e7b3807e16ea33a14ad7271f062
+    // Check if response contains data
+    if (response && response.data) {
+      createCarousel(response.data);
+    } else {
+      console.error("No data received from API");
+    }
+  })
+  .catch((error) => {
+    console.error("Fetch operation failed:", error);
+  });
+
+// Function to create carousel from fetched data
+function createCarousel(postsData) {
+  const postsContainer = document.getElementById('posts');
+
+  // Check if response contains data
+  if (postsData && Array.isArray(postsData) && postsData.length > 0) {
+    // Iterate through each post object
+    postsData.forEach(post => {
+      const tags = post.tags;
+      const title = post.title;
+      const media = post.media.url;
+      const postId = post.id || ``;
+
+      // Create HTML elements for each post
+      const postElement = document.createElement('div');
+      postElement.classList.add('post');
+      postElement.innerHTML = `
+        <div class="blog-card">
+          <div class="image-container">
+            <img src="${media}" alt="${media.alt}" class="post-image">
+          </div>
+          <p class="tags">${tags}</p>
+          <h2>${title}</h2>
+        </div>
+      `;
+      postElement.addEventListener('click', () =>{
+        window.location.href = `/details.html?id=${postId}`;
+      });
+      // Append the post element to the posts container
+      postsContainer.appendChild(postElement);
+    });
+  } else {
+    // Display a message if no data is received
+    postsContainer.innerHTML = "<p>No posts found.</p>";
+  }
+}
+
+
+<<<<<<< HEAD
+=======
+const post = document.getElementById("posts");
+
+
+
+
+
+
+
+const clearStorage = document.getElementById("clearStorage");
+
+clearStorage.addEventListener("click", () => {
+  localStorage.clear();
+});
+
+
+
+>>>>>>> 4d967f1b28d42e7b3807e16ea33a14ad7271f062
+/*
+--------------------------------------------------------------
+
+
+const isAdmin = true; // Example: Assuming user is an admin
+
+document.addEventListener('DOMContentLoaded', () => {
+  const adminOverlay = document.getElementById('adminOverlay');
+  
+  // Show admin overlay if user is an admin
+  if (isAdmin) {
+    adminOverlay.style.display = 'block';
+  } else {
+    adminOverlay.style.display = 'none';
+  }
+});
+
+// Retrieve the user's name from localStorage
+const myName = localStorage.getItem('name');
+document.getElementById('hello').innerText = `Welcome, ${myName}!`;
+
+--------------------------------------------------------------
+*/
+
+//image slider-----------------------------------------------------------------
+/* JavaScript */
+
+// JavaScript
+
+document.addEventListener('DOMContentLoaded', function() {
+  const prevButton = document.querySelector('.prev-btn');
+  const nextButton = document.querySelector('.next-btn');
+  const postcards = document.querySelectorAll('.post-image');
+  let currentIndex = 0;
+
+  if (postcards.length > 0) {
+    currentIndex = 0; // Initialize to the first postcard if available
+  }
+
+  function showCurrentPostcard() {
+    console.log('Current Index:', currentIndex);
+    postcards.forEach((postcard, index) => {
+      if (index === currentIndex) {
+        postcard.classList.add('visible');
+      } else {
+        postcard.classList.remove('visible');
+      }
+    });
+  }
+
+  showCurrentPostcard();
+
+  nextButton.addEventListener('click', function() {
+    console.log('Next button clicked');
+    if (postcards.length > 0) {
+      currentIndex = (currentIndex + 1) % postcards.length;
+      console.log('New index:', currentIndex);
+      showCurrentPostcard();
+    }
+  });
+
+  prevButton.addEventListener('click', function() {
+    console.log('Previous button clicked');
+    if (postcards.length > 0) {
+      currentIndex = (currentIndex - 1 + postcards.length) % postcards.length;
+      console.log('New index:', currentIndex);
+      showCurrentPostcard();
+    }
+  });
+});
+
 /*
 async function fetchApi(){
     return fetchData("https://v2.api.noroff.dev/blog/posts/ole");
@@ -40,6 +293,7 @@ const options = {
 
 
 
+//image slider-----------------------------------------------------------------
 
 
 async function fetchApi() {
@@ -156,240 +410,3 @@ loginUser(`${API_BASE_URL}auth/login`, user);
 
 --------------------------------------------------------------
 */
-
-const API_BASE_URL = "https://v2.api.noroff.dev/";
-
-const BlogName = localStorage.getItem("name");
-
-// Function to show buttons based on certain conditions (e.g., after login)
-function showButton() {
-  // Check if user is logged in (example: check if access token exists in localStorage)
-  const accessToken = localStorage.getItem("accessToken");
-  const BlogName = localStorage.getItem("name");
-
-  if (accessToken) {
-    // User is logged in, show the buttons
-    document.getElementById("show-button").style.display = "inline-block";
-    document.getElementById("blogName").innerHTML = "Welcome " + BlogName;
-  } else {
-    // User is not logged in, buttons remain hidden (display: none;)
-    // Optionally, you can choose to do something else here (e.g., redirect to login page)
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const showButton = document.getElementById("show-button");
-  const createShow = document.getElementById("create-show");
-
-  showButton.addEventListener("click", () => {
-    // Toggle the visibility of the create-show element
-    createShow.style.display =
-      createShow.style.display === "none" ? "block" : "none";
-  });
-});
-
-// Call the showButtons function when the page loads
-showButton();
-
-async function createPost(token, postData) {
-  try {
-    const response = await fetch(`${API_BASE_URL}blog/posts/ole123`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(postData),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to create post. Status: ${response.status}`);
-    }
-
-    const responseData = await response.json();
-    console.log("Post created successfully:", responseData);
-    return responseData; // Return the created post data if needed
-  } catch (error) {
-    console.error("Error creating post:", error);
-    throw error;
-  }
-}
-
-function getTokenFromLocalStorage() {
-  const token = localStorage.getItem("accessToken");
-  if (!token) {
-    throw new Error("No access token found in local storage");
-  }
-  return token;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const createPostBtn = document.getElementById("create-post-btn");
-
-  createPostBtn.addEventListener("click", async () => {
-    try {
-      const token = getTokenFromLocalStorage();
-      const title = document.getElementById("title").value;
-      const body = document.getElementById("body").value;
-      const tags = document
-        .getElementById("tags")
-        .value.split(",")
-        .map((tag) => tag.trim());
-      const mediaUrl = document.getElementById("media-url").value;
-      const mediaAlt = document.getElementById("media-alt").value;
-
-      const postData = {
-        title,
-        body,
-        tags,
-        media: {
-          url: mediaUrl,
-          alt: mediaAlt,
-        },
-      };
-
-      await createPost(token, postData);
-      alert("Post created successfully!");
-    } catch (error) {
-      console.error("Error creating post:", error);
-      alert("Failed to create post. Please try again.");
-    }
-  });
-});
-
-
-
-const myApiKey = "5794466a-ac21-441f-8a55-385e2fda14c7"; // Define your API key
-
-// Fetch data and create carousel
-fetchApi(myApiKey)
-  .then((response) => {
-    console.log("Fetched data:", response);
-    // Check if response contains data
-    if (response && response.data) {
-      createCarousel(response.data);
-    } else {
-      console.error("No data received from API");
-    }
-  })
-  .catch((error) => {
-    console.error("Fetch operation failed:", error);
-  });
-
-// Function to create carousel from fetched data
-function createCarousel(postsData) {
-  const postsContainer = document.getElementById('posts');
-
-  // Check if response contains data
-  if (postsData && Array.isArray(postsData) && postsData.length > 0) {
-    // Iterate through each post object
-    postsData.forEach(post => {
-      const tags = post.tags;
-      const title = post.title;
-      const media = post.media.url;
-      const postId = post.id || ``;
-
-      // Create HTML elements for each post
-      const postElement = document.createElement('div');
-      postElement.classList.add('post');
-      postElement.innerHTML = `
-        <div class="blog-card">
-          <div class="image-container">
-            <img src="${media}" alt="${media.alt}" class="post-image">
-          </div>
-          <p class="tags">${tags}</p>
-          <h2>${title}</h2>
-        </div>
-      `;
-      postElement.addEventListener('click', () =>{
-        window.location.href = `/details.html?id=${postId}`;
-      });
-      // Append the post element to the posts container
-      postsContainer.appendChild(postElement);
-    });
-  } else {
-    // Display a message if no data is received
-    postsContainer.innerHTML = "<p>No posts found.</p>";
-  }
-}
-
-
-/*
---------------------------------------------------------------
-
-
-const isAdmin = true; // Example: Assuming user is an admin
-
-document.addEventListener('DOMContentLoaded', () => {
-  const adminOverlay = document.getElementById('adminOverlay');
-  
-  // Show admin overlay if user is an admin
-  if (isAdmin) {
-    adminOverlay.style.display = 'block';
-  } else {
-    adminOverlay.style.display = 'none';
-  }
-});
-
-// Retrieve the user's name from localStorage
-const myName = localStorage.getItem('name');
-document.getElementById('hello').innerText = `Welcome, ${myName}!`;
-
---------------------------------------------------------------
-*/
-
-//image slider-----------------------------------------------------------------
-/* JavaScript */
-
-// JavaScript
-
-document.addEventListener('DOMContentLoaded', function() {
-  const prevButton = document.querySelector('.prev-btn');
-  const nextButton = document.querySelector('.next-btn');
-  const postcards = document.querySelectorAll('.post-image');
-  let currentIndex = 0;
-
-  if (postcards.length > 0) {
-    currentIndex = 0; // Initialize to the first postcard if available
-  }
-
-  function showCurrentPostcard() {
-    console.log('Current Index:', currentIndex);
-    postcards.forEach((postcard, index) => {
-      if (index === currentIndex) {
-        postcard.classList.add('visible');
-      } else {
-        postcard.classList.remove('visible');
-      }
-    });
-  }
-
-  showCurrentPostcard();
-
-  nextButton.addEventListener('click', function() {
-    console.log('Next button clicked');
-    if (postcards.length > 0) {
-      currentIndex = (currentIndex + 1) % postcards.length;
-      console.log('New index:', currentIndex);
-      showCurrentPostcard();
-    }
-  });
-
-  prevButton.addEventListener('click', function() {
-    console.log('Previous button clicked');
-    if (postcards.length > 0) {
-      currentIndex = (currentIndex - 1 + postcards.length) % postcards.length;
-      console.log('New index:', currentIndex);
-      showCurrentPostcard();
-    }
-  });
-});
-
-
-//image slider-----------------------------------------------------------------
-
-const clearStorage = document.getElementById("clearStorage");
-
-clearStorage.addEventListener("click", () => {
-  localStorage.clear();
-});
