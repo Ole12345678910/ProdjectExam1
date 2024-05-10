@@ -1,78 +1,81 @@
-*{
-    margin: 0;
-    padding: 0;
-    background-color: rgb(201, 201, 201);
+* {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(201, 201, 201);
 }
 
-
-<<<<<<< HEAD
-#create-show ,#show-button{
-    display: none;
+#create-show {
+  display: none;
 }
 
-=======
-
-#create-show{
-    display: none;
+#show-button {
+  display: none;
 }
 
-#show-button{
-    display: none;
+.blog-card-big {
+  margin: 1rem;
+  padding: 1rem;
+  line-height: 1.7rem;
 }
 
-.blog-card{
-    margin: 1rem;
-    padding: 1rem;
-    line-height: 1.7rem;
-    position: absolute;
-    right: 50%;
-}
->>>>>>> 4d967f1b28d42e7b3807e16ea33a14ad7271f062
-
-.blog-card-big{
-    margin: 1rem;
-    padding: 1rem;
-    line-height: 1.7rem;
+.post-image-big {
+  width: 500px;
 }
 
-.post-image-big{
-    width: 500px;
+#edit-show {
+  display: none;
 }
 
-
-
-#edit-show{
-    display: none;
-}
-
-/* CSS */
-
-/* Hide all images by default */
-.post-image {
-}
-
-/* Show the image with the 'visible' class */
-.post-image.visible {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-/* Ensure that images are stacked on top of each other */
-.post-image {
-  z-index: 0;
-}
-
-<<<<<<< HEAD
-/* Bring the visible image to the top */
-.post-image.visible {
-  z-index: 1;
-}
-=======
-#edit-show{
-    display: none;
+#edit-show {
+  display: none;
 }
 /*--------------------------------------*/
 
->>>>>>> 4d967f1b28d42e7b3807e16ea33a14ad7271f062
+/* Ensure images are displayed at their intrinsic dimensions */
+.post-image {
+  width: 100%;
+  height: auto;
+}
+
+  .blog-card{
+    height: 500px;
+    width: 700px;
+    transition: transform 0.5s ease;
+  }
+  
+  /* Ensure the buttons are positioned absolutely */
+  .prev-btn,
+  .next-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .prev-btn {
+    left: 0;
+  }
+  
+  .next-btn {
+    right: 0;
+  }
+  
+
+  .blog-container {
+    display: flex;
+  }
+
+  .carousel-wrapper {
+    max-width: 700px;
+    height: 700px;
+    overflow: hidden;
+    display: flex; /* Ensure items remain in a row */
+    margin: auto;
+  }
+  
+  .blog-container {
+    flex-shrink: 0; /* Prevent items from shrinking */
+    min-width: 300px; /* Set minimum width to ensure items don't shrink */
+  }
+  

@@ -130,14 +130,12 @@ const myApiKey = "5794466a-ac21-441f-8a55-385e2fda14c7"; // Define your API key
 fetchApi(myApiKey)
   .then((response) => {
     console.log("Fetched data:", response);
-<<<<<<< HEAD
-=======
     const postsContainer = document.getElementById('posts');
-    
->>>>>>> 4d967f1b28d42e7b3807e16ea33a14ad7271f062
+
     // Check if response contains data
     if (response && response.data) {
       createCarousel(response.data);
+      initializeCarousel();
     } else {
       console.error("No data received from API");
     }
@@ -171,7 +169,7 @@ function createCarousel(postsData) {
           <h2>${title}</h2>
         </div>
       `;
-      postElement.addEventListener('click', () =>{
+      postElement.addEventListener('click', () => {
         window.location.href = `/details.html?id=${postId}`;
       });
       // Append the post element to the posts container
@@ -182,16 +180,39 @@ function createCarousel(postsData) {
     postsContainer.innerHTML = "<p>No posts found.</p>";
   }
 }
+function initializeCarousel() {
+  const prevButton = document.querySelector('.prev-btn');
+  const nextButton = document.querySelector('.next-btn');
+  const carouselWrapper = document.querySelector('.carousel-wrapper');
+  const postContainer = document.querySelector('.blog-container');
+  const postCards = document.querySelectorAll('.blog-card');
+  let currentIndex = 0;
+  const cardWidth = postCards[0].offsetWidth + parseInt(getComputedStyle(postCards[0]).marginRight);
 
+  const moveAmount = 1; // Adjust this value as needed
 
-<<<<<<< HEAD
-=======
-const post = document.getElementById("posts");
+  nextButton.addEventListener('click', function() {
+    currentIndex += moveAmount * cardWidth; // Increment by moveAmount * cardWidth
+    if (currentIndex >= postCards.length * cardWidth) { // Check if currentIndex exceeds total width
+      currentIndex = 0; // Reset currentIndex to start
+    }
+    updateCarousel();
+  });
 
+  prevButton.addEventListener('click', function() {
+    currentIndex -= moveAmount * cardWidth; // Decrement by moveAmount * cardWidth
+    if (currentIndex < 0) {
+      currentIndex = postCards.length * cardWidth - cardWidth; // Set currentIndex to the end
+    }
+    updateCarousel();
+  });
 
-
-
-
+  function updateCarousel() {
+    postCards.forEach((card, index) => {
+      card.style.transform = `translateX(-${currentIndex}px)`;
+    });
+  }
+}
 
 
 const clearStorage = document.getElementById("clearStorage");
@@ -202,7 +223,6 @@ clearStorage.addEventListener("click", () => {
 
 
 
->>>>>>> 4d967f1b28d42e7b3807e16ea33a14ad7271f062
 /*
 --------------------------------------------------------------
 
@@ -232,47 +252,6 @@ document.getElementById('hello').innerText = `Welcome, ${myName}!`;
 
 // JavaScript
 
-document.addEventListener('DOMContentLoaded', function() {
-  const prevButton = document.querySelector('.prev-btn');
-  const nextButton = document.querySelector('.next-btn');
-  const postcards = document.querySelectorAll('.post-image');
-  let currentIndex = 0;
-
-  if (postcards.length > 0) {
-    currentIndex = 0; // Initialize to the first postcard if available
-  }
-
-  function showCurrentPostcard() {
-    console.log('Current Index:', currentIndex);
-    postcards.forEach((postcard, index) => {
-      if (index === currentIndex) {
-        postcard.classList.add('visible');
-      } else {
-        postcard.classList.remove('visible');
-      }
-    });
-  }
-
-  showCurrentPostcard();
-
-  nextButton.addEventListener('click', function() {
-    console.log('Next button clicked');
-    if (postcards.length > 0) {
-      currentIndex = (currentIndex + 1) % postcards.length;
-      console.log('New index:', currentIndex);
-      showCurrentPostcard();
-    }
-  });
-
-  prevButton.addEventListener('click', function() {
-    console.log('Previous button clicked');
-    if (postcards.length > 0) {
-      currentIndex = (currentIndex - 1 + postcards.length) % postcards.length;
-      console.log('New index:', currentIndex);
-      showCurrentPostcard();
-    }
-  });
-});
 
 /*
 async function fetchApi(){
