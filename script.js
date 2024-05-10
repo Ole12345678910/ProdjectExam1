@@ -185,7 +185,7 @@ function initializeCarousel() {
   const nextButton = document.querySelector('.next-btn');
   const carouselWrapper = document.querySelector('.carousel-wrapper');
   const postContainer = document.querySelector('.blog-container');
-  const postCards = document.querySelectorAll('.blog-card');
+  const postCards = document.querySelectorAll('.post');
   let currentIndex = 0;
   const cardWidth = postCards[0].offsetWidth + parseInt(getComputedStyle(postCards[0]).marginRight);
 
