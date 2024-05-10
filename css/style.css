@@ -29,6 +29,13 @@
 #edit-show {
   display: none;
 }
+
+.newest-text{
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+}
+
 /*--------------------------------------*/
 
 /* Ensure images are displayed at their intrinsic dimensions */
@@ -44,14 +51,25 @@
   }
   
   /* Ensure the buttons are positioned absolutely */
-  .prev-btn,
-  .next-btn {
+  .slider-container {
+    background: transparent;
+    position: absolute; /* Set position to absolute */
+    top: 30%;
+    display: flex;
+    justify-content: space-between; /* Distribute items evenly along the main axis */
+    width: 725px; /* Ensure full width of the container */
+  }
+  
+.prev-btn,.next-btn{
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
-    padding: 10px;
+    padding: 0.5rem 1.2rem;
     cursor: pointer;
-  }
+    font-size: 2rem;
+    border-radius: 50%;
+    font-weight: bold;
+}
   
   .prev-btn {
     left: 0;
@@ -60,7 +78,6 @@
   .next-btn {
     right: 0;
   }
-  
 
   .blog-container {
     display: flex;
@@ -68,7 +85,7 @@
 
   .carousel-wrapper {
     max-width: 700px;
-    height: 700px;
+    height: 600px;
     overflow: hidden;
     display: flex; /* Ensure items remain in a row */
     margin: auto;
@@ -76,6 +93,10 @@
   
   .blog-container {
     flex-shrink: 0; /* Prevent items from shrinking */
-    min-width: 300px; /* Set minimum width to ensure items don't shrink */
   }
-  
+
+.carousel-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

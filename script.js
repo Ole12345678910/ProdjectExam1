@@ -126,15 +126,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const myApiKey = "5794466a-ac21-441f-8a55-385e2fda14c7"; // Define your API key
 
-// Fetch data and create carousel
+// Fetch data for the first set of posts and create carousel
 fetchApi(myApiKey)
   .then((response) => {
     console.log("Fetched data:", response);
-    const postsContainer = document.getElementById('posts');
+    const topPostsContainer = document.getElementById('top-posts');
+    const secondPostsContainer = document.getElementById('posts');
 
     // Check if response contains data
     if (response && response.data) {
-      createCarousel(response.data);
+      createCarousel(response.data, topPostsContainer);
+      createSecondPosts(response.data, secondPostsContainer);
       initializeCarousel();
     } else {
       console.error("No data received from API");
@@ -145,13 +147,17 @@ fetchApi(myApiKey)
   });
 
 // Function to create carousel from fetched data
-function createCarousel(postsData) {
-  const postsContainer = document.getElementById('posts');
-
+function createCarousel(postsData, container) {
   // Check if response contains data
   if (postsData && Array.isArray(postsData) && postsData.length > 0) {
+    // Sort posts by the 'created' tag (assuming 'created' is a date)
+    postsData.sort((a, b) => new Date(b.created) - new Date(a.created));
+
+    // Extract only the top 3 newest posts
+    const top3Posts = postsData.slice(0, 3);
+
     // Iterate through each post object
-    postsData.forEach(post => {
+    top3Posts.forEach(post => {
       const tags = post.tags;
       const title = post.title;
       const media = post.media.url;
@@ -172,14 +178,20 @@ function createCarousel(postsData) {
       postElement.addEventListener('click', () => {
         window.location.href = `/details.html?id=${postId}`;
       });
-      // Append the post element to the posts container
-      postsContainer.appendChild(postElement);
+      // Append the post element to the container
+      container.appendChild(postElement);
     });
   } else {
     // Display a message if no data is received
-    postsContainer.innerHTML = "<p>No posts found.</p>";
+    container.innerHTML = "<p>No posts found.</p>";
   }
 }
+
+// Function to create the second set of posts
+function createSecondPosts(postsData, container) {
+  // Implement this function similarly to createCarousel, but with different logic if needed
+}
+
 function initializeCarousel() {
   const prevButton = document.querySelector('.prev-btn');
   const nextButton = document.querySelector('.next-btn');
@@ -215,11 +227,24 @@ function initializeCarousel() {
 }
 
 
+/*other posts*/
+
+
+
+
+
 const clearStorage = document.getElementById("clearStorage");
 
 clearStorage.addEventListener("click", () => {
   localStorage.clear();
 });
+
+
+
+
+
+
+
 
 
 

@@ -9,13 +9,17 @@
   <body>
     <header></header>
     <h1 id="blogName"></h1>
+    <h2 class="newest-text">Newest Posts!</h2>
     <div class="carousel-container">
       <div class="carousel-wrapper">
-        <div class="blog-container" id="posts"></div>
+        <div class="blog-container" id="top-posts"></div>
+      </div>
+      <div class="slider-container">
+        <button class="prev-btn">&lt;</button>
+        <button class="next-btn">&gt;</button>
       </div>
     </div>
-    <button class="prev-btn">&lt;</button>
-    <button class="next-btn">&gt;</button>
+    <div id="posts"></div>
     <div class="make-post">
       <Button id="show-button">Make</Button>
       <div id="create-show" class="post-container">
