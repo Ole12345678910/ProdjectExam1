@@ -243,9 +243,51 @@ clearStorage.addEventListener("click", () => {
 
 
 
+fetchApi(myApiKey)
+  .then((response) => {
+    console.log("Fetched data:", response);
+    const postsContainer = document.getElementById("posts");
 
+    // Check if response contains data
+    if (
+      response &&
+      response.data &&
+      Array.isArray(response.data) &&
+      response.data.length > 0
+    ) {
+      response.data.forEach((post) => {
+        const postId = post.id;
+        const tags = post.tags;
+        const title = post.title;
+        const media = post.media.url;
 
+        // Create HTML elements for each post
+        const postElement = document.createElement("div");
+        postElement.classList.add("post");
+        postElement.innerHTML = `
+          <div class="blog-card-main">
+            <img src="${media}" alt="${media.alt}" class="post-image-big">
+            <p class="tags">${tags}</p>
+            <h2>${title}</h2>
+          </div>
+        `;
 
+        // Add event listener to redirect to details page on click
+        postElement.addEventListener('click', () => {
+          window.location.href = `/details.html?id=${postId}`;
+        });
+
+        // Append the post element to the posts container
+        postsContainer.appendChild(postElement);
+      });
+    } else {
+      // Display a message if no data is received
+      postsContainer.innerHTML = "<p>No posts found.</p>";
+    }
+  })
+  .catch((error) => {
+    console.error("Fetch operation failed:", error);
+  });
 
 
 /*
