@@ -131,12 +131,10 @@ fetchApi(myApiKey)
   .then((response) => {
     console.log("Fetched data:", response);
     const topPostsContainer = document.getElementById('top-posts');
-    const secondPostsContainer = document.getElementById('posts');
 
     // Check if response contains data
     if (response && response.data) {
       createCarousel(response.data, topPostsContainer);
-      createSecondPosts(response.data, secondPostsContainer);
       initializeCarousel();
     } else {
       console.error("No data received from API");
